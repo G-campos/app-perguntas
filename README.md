@@ -1,6 +1,6 @@
 # projeto_perguntas
 
-A new Flutter project.
+A new Flutter project. (this is focused on android devices)
 
 ## Getting Started
 
