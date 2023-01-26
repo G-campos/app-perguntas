@@ -1,31 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_perguntas/questionario.dart';
+import 'package:projeto_perguntas/resultado.dart';
 
 main() => runApp(const PerguntaApp());
 
-class PerguntaApp extends StatelessWidget {
-  const PerguntaApp({super.key});
+class _PerguntaAppState extends State<PerguntaApp> {
+  var _perguntaSelecionada = 0;
+
+  final _perguntas = const [
+    {
+      'texto': 'Qual é a sua cor favorita?',
+      'respostas': ['Preto', 'Vermelho', 'Verde', 'Branco']
+    },
+    {
+      'texto': 'Qual é o seu animal favorito?',
+      'respostas': ['Coelho', 'Cobra', 'Elefante', 'Leão']
+    },
+    {
+      'texto': 'Qual é o seu instrutor favorito?',
+      'respostas': ['Maria', 'João', 'Leo', 'Pedro']
+    }
+  ];
+
+  void _responder() {
+    if (temPerguntaSelecionada) {
+      setState(() {
+        _perguntaSelecionada++;
+      });
+    }
+  }
+
+  void _reiniciar() {
+    setState(() {
+      _perguntaSelecionada = 0;
+    });
+  }
+
+  bool get temPerguntaSelecionada {
+    return _perguntaSelecionada < _perguntas.length;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final perguntas = [
-      'Qual é a sua cor favorita?',
-      'Qual é o seu animal favorito?'
-    ];
-
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Perguntas'),
-        ),
-        body: Column(
-          children: <Widget>[
-            Text(perguntas[0]),
-            const ElevatedButton(onPressed: null, child: Text('Resposta 1')),
-            const ElevatedButton(onPressed: null, child: Text('Resposta 2')),
-            const ElevatedButton(onPressed: null, child: Text('Resposta 3')),
-          ],
-        ),
-      ),
+          appBar: AppBar(
+            title: const Text('Perguntas'),
+          ),
+          body: temPerguntaSelecionada
+              ? Questionario(
+                  perguntas: _perguntas,
+                  perguntaSelecionada: _perguntaSelecionada,
+                  responder: _responder)
+              : Resultado(
+                  'Reiniciar!',
+                  _reiniciar,
+                )),
     );
+  }
+}
+
+class PerguntaApp extends StatefulWidget {
+  const PerguntaApp({super.key});
+
+  @override
+  _PerguntaAppState createState() {
+    return _PerguntaAppState();
   }
 }
